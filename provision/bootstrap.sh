@@ -1,10 +1,11 @@
 #!/bin/bash
 VAGRANT_CORE_FOLDER=$(echo "$1")
+ssh_username=$(echo "$1")
 
 OS=$(/bin/bash "${VAGRANT_CORE_FOLDER}/provision/os-detect.sh" ID)
 CODENAME=$(/bin/bash "${VAGRANT_CORE_FOLDER}/provision/os-detect.sh" CODENAME)
 
-#cat "${VAGRANT_CORE_FOLDER}/shell/self-promotion.txt"
+cat "${VAGRANT_CORE_FOLDER}/provision/linux.txt"
 
 if [[ ! -d '/.puphpet-stuff' ]]; then
     mkdir '/.puphpet-stuff'
@@ -40,6 +41,7 @@ if [[ ! -f '/.puphpet-stuff/initial-setup-base-packages' ]]; then
         yum -y install centos-release-SCL 
         yum remove ruby
 
+		#article - https://www.digitalocean.com/community/articles/how-to-install-ruby-2-1-0-on-centos-6-5-using-rvm
 		curl -L get.rvm.io | bash -s stable
 		source /etc/profile.d/rvm.sh
 		rvm reload
@@ -64,6 +66,7 @@ if [[ ! -f '/.puphpet-stuff/initial-setup-base-packages' ]]; then
         echo 'Installing Puppet'
         rpm -ivh http://yum.puppetlabs.com/puppetlabs-release-el-6.noarch.rpm
         yum -y --nogpgcheck install puppet
+        echo 'Finished installing Puppet'
 
 
         # echo 'Installing r10k'
@@ -73,21 +76,3 @@ if [[ ! -f '/.puphpet-stuff/initial-setup-base-packages' ]]; then
         touch '/.puphpet-stuff/initial-setup-base-packages'
     fi
 fi
-
-
-
-# #install ruby
-# curl -L get.rvm.io | bash -s stable
-# source /etc/profile.d/rvm.sh
-# rvm reload
-# rvm install 2.1.2
-# rvm use 2.1.2 --default
-
-# #install ruby
-# sudo rpm -Uvh http://rbel.frameos.org/rbel6
-# sudo yum install ruby-libs
-# sudo yum install ruby ruby-devel ruby-ri ruby-rdoc ruby-shadow gcc gcc-c++ automake autoconf make curl dmidecode
-
-# #install puppet
-# rpm -ivh http://yum.puppetlabs.com/puppetlabs-release-el-7.noarch.rpm
-# sudo yum install puppet

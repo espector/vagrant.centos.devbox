@@ -1,0 +1,40 @@
+{
+  "name": "jlondon-phpmyadmin",
+  "version": "0.1.0",
+  "source": "UNKNOWN",
+  "author": "Justice London",
+  "license": "Apache License, Version 2.0",
+  "summary": "Puppet phpMyAdmin module",
+  "description": "A puppet module which allows you to install and manage phpMyAdmin",
+  "project_page": "http://github.com/justicel/puppet-phpmyadmin",
+  "dependencies": [
+    {
+      "name": "puppetlabs/apache",
+      "version_requirement": ">= 0.6.0"
+    },
+    {
+      "name": "puppetlabs/concat",
+      "version_requirement": ">= 1.0.0"
+    }
+  ],
+  "types": [
+
+  ],
+  "checksums": {
+    "Modulefile": "7b4326bcffcdbec45b8f56a79479527e",
+    "README.md": "9c7299b84a304928b77e427639dc79ce",
+    "manifests/debconf.pp": "789f8c49ee02d729ebaf7b2f75f797f0",
+    "manifests/init.pp": "9c788a42216a8310627b6e7ebb4578ed",
+    "manifests/params.pp": "19250fb901478d52efb8dc8de2a999f4",
+    "manifests/server.pp": "f905bf700aa0770b2cd2d92c0778944d",
+    "manifests/servernode.pp": "583c3febe7ce51e17a4ee049e96023ac",
+    "manifests/vhost.pp": "e362a68593d640ebe2c05ad46056a426",
+    "spec/spec_helper.rb": "a55d1e6483344f8ec6963fcb2c220372",
+    "templates/apache/phpmyadmin_fragment.erb": "863d577f350c8758777259639d7993b0",
+    "templates/config_footer.inc.php.erb": "5339df96cb9de55dc08d93a5479b9e20",
+    "templates/config_header.inc.php.erb": "1b98f3af6b87ff710d32ee1b0a458f6c",
+    "templates/phpMyAdmin.conf.erb": "68ff7fc85e36fb76e75d1ff46d50d479",
+    "templates/servernode.erb": "92a224b453072ab92176b9c7ce6ba0b8",
+    "tests/init.pp": "dbbc85dc39303725d65db110ca289ddb"
+  }
+}

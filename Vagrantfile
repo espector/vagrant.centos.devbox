@@ -1,3 +1,10 @@
+require 'yaml'
+
+dir = File.dirname(File.expand_path(__FILE__))
+
+configValues = YAML.load_file("#{dir}/provision/config.yaml")
+data = configValues['vagrantfile-local']
+
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
@@ -10,8 +17,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # please see the online documentation at vagrantup.com.
 
   # Every Vagrant virtual environment requires a box to build off of.
-  config.vm.box = "centos-6.5"
-  config.vm.box_url = "https://github.com/2creatives/vagrant-centos/releases/download/v6.5.3/centos65-x86_64-20140116.box"
+  config.vm.box = "#{data['vm']['box']}"
+  config.vm.box_url = "#{data['vm']['box_url']}"
+
+  if data['vm']['hostname'].to_s != ''
+    config.vm.hostname = "#{data['vm']['hostname']}"
+  end
 
 
   # Disable automatic box update checking. If you disable this, then
@@ -26,7 +37,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
-  config.vm.network "private_network", ip: "192.168.33.10"
+  config.vm.network "private_network", ip: "#{data['vm']['network']['private_network']}"
 
   # Create a public network, which generally matched to bridged network.
   # Bridged networks make the machine appear as another physical device on
@@ -52,17 +63,25 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     # vb.gui = true
   
     # Use VBoxManage to customize the VM. For example to change memory:
-    vb.customize ["modifyvm", :id, "--memory", "512"]
+    vb.customize ["modifyvm", :id, "--memory", "#{data['vm']['memory']}"]
   end
   #
   # View the documentation for the provider you're using for more
   # information on available options.
 
+  ssh_username = !data['ssh']['username'].nil? ? data['ssh']['username'] : "vagrant"
+
   #bootstrap vagrant
   config.vm.provision "shell" do |s|
     s.path = "provision/bootstrap.sh"
-    s.args = "/vagrant"
+    s.args = ["/vagrant", "#{ssh_username}"]
   end
+
+  # #setup ssh keys
+  # config.vm.provision "shell" do |kg|
+  #   kg.path = "provision/ssh-keygen.sh"
+  #   kg.args = "#{ssh_username}"
+  # end
 
   # Enable provisioning with CFEngine. CFEngine Community packages are
   # automatically installed. For example, configure the host as a
@@ -85,10 +104,15 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # You will need to create the manifests directory and a manifest in
   # the file default.pp in the manifests_path directory.
   #
-  # config.vm.provision "puppet" do |puppet|
-  #   puppet.manifests_path = "manifests"
-  #   puppet.manifest_file  = "site.pp"
-  # end
+  config.vm.provision "puppet" do |puppet|
+    puppet.manifests_path = "#{data['vm']['provision']['puppet']['manifests_path']}"
+    puppet.manifest_file = "#{data['vm']['provision']['puppet']['manifest_file']}"
+    puppet.module_path = "#{data['vm']['provision']['puppet']['module_path']}"
+
+    if !data['vm']['provision']['puppet']['options'].empty?
+      puppet.options = data['vm']['provision']['puppet']['options']
+    end
+  end
 
   # Enable provisioning with chef solo, specifying a cookbooks path, roles
   # path, and data_bags path (all relative to this Vagrantfile), and adding
