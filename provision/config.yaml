@@ -4,6 +4,7 @@ vagrantfile-local:
         box: centos-6.5
         box_url: https://github.com/2creatives/vagrant-centos/releases/download/v6.5.3/centos65-x86_64-20140116.box
         hostname: centos65
+        domain: example.com
         memory: '512'
         chosen_provider: virtualbox
         network:
@@ -30,19 +31,19 @@ vagrantfile-local:
     vagrant:
         host: detect
     php:
-	    install: '1'
-	    version: '55'
-	    composer: 1
-	    modules:
-	        php:
-	            - cli
-	            - intl
-	            - mcrypt
-	        pear: {  }
-	        pecl:
-	            - pecl_http
-	    ini:
-	        display_errors: On
-	        error_reporting: '-1'
-	        session.save_path: /var/lib/php/session
-	    timezone: America/New York
+        install: '1'
+        version: '55'
+        composer: 1
+        modules:
+            php:
+                - cli
+                - intl
+                - mcrypt
+            pear: {  }
+            pecl:
+                - pecl_http
+        ini:
+            display_errors: On
+            error_reporting: '-1'
+            session.save_path: /var/lib/php/session
+        timezone: America/New York

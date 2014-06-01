@@ -21,7 +21,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.box_url = "#{data['vm']['box_url']}"
 
   if data['vm']['hostname'].to_s != ''
-    config.vm.hostname = "#{data['vm']['hostname']}"
+    config.vm.hostname = "#{data['vm']['hostname']}"  + "." + "#{data['vm']['domain']}"
+
   end
 
 
